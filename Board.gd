@@ -4,6 +4,10 @@ export var row_num: int = 16
 export var col_num: int = 16
 export var mine_num: int = 40
 
+var new_game_row_num: int = row_num
+var new_game_col_num: int = col_num
+var new_game_mine_num: int = mine_num
+
 export (PackedScene) var Cell
 
 var cell_matrix := []
@@ -15,12 +19,16 @@ const eight_neighbor = [[-1, -1], [-1, 0], [-1, 1],
 						[1, -1], [1, 0], [1, 1]]
 
 func new_game(row, col, mine):
-	assert(typeof(row) == TYPE_INT and typeof(col) == TYPE_INT)
-	assert(row > 0 and col > 0)
-	assert(row <= 50 and col <= 50)
+	assert(typeof(row) == TYPE_INT and typeof(col) == TYPE_INT and typeof(mine) == TYPE_INT)
+	assert(row > 0 and col > 0 and mine > 0)
+	# assert(row <= 50 and col <= 50)
 	
-	assert(typeof(mine) == TYPE_INT)
-	assert(mine > 0 and mine < row * col)
+	if (mine >= row * col):
+		mine = row * col - 1
+	
+	row_num = row
+	col_num = col
+	mine_num = mine
 	
 	is_first_click = true
 	is_game_over = false
@@ -145,4 +153,16 @@ func generate_mines(exclude_row: int, exclude_col: int):
 				cell_matrix[new_r][new_c].add_neighbor_num()
 
 func _on_Restart_button_up():
-	new_game(row_num, col_num, mine_num)
+	new_game(new_game_row_num, new_game_col_num, new_game_mine_num)
+
+
+func _on_RowNum_value_changed(value):
+	new_game_row_num = int(value)
+
+
+func _on_ColNum_value_changed(value):
+	new_game_col_num = int(value)
+
+
+func _on_MineNum_value_changed(value):
+	new_game_mine_num = int(value)

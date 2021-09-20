@@ -27,8 +27,10 @@ config/icon="res://icon.png"
 
 [display]
 
-window/size/width=800
+window/size/width=1280
+window/size/height=720
 window/size/resizable=false
+window/stretch/aspect="expand"
 
 [gdnative]
 
