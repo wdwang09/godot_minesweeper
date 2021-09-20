@@ -1,8 +1,8 @@
 extends GridContainer
 
-var row_num: int = 16
-var col_num: int = 16
-var mine_num: int = 40
+export var row_num: int = 16
+export var col_num: int = 16
+export var mine_num: int = 40
 
 export (PackedScene) var Cell
 
@@ -15,21 +15,40 @@ const eight_neighbor = [[-1, -1], [-1, 0], [-1, 1],
 						[1, -1], [1, 0], [1, 1]]
 
 func new_game(row, col, mine):
-	is_first_click = true
-	is_game_over = false
-	create_cells(row, col)
-	mine_num = mine
-
-func create_cells(row, col):
 	assert(typeof(row) == TYPE_INT and typeof(col) == TYPE_INT)
 	assert(row > 0 and col > 0)
 	assert(row <= 50 and col <= 50)
 	
+	assert(typeof(mine) == TYPE_INT)
+	assert(mine > 0 and mine < row * col)
+	
+	is_first_click = true
+	is_game_over = false
+	create_cells(row, col)
+	mine_num = mine
+#	print(anchor_top, " ", anchor_bottom, " ", anchor_left, " ", anchor_right)
+#	print(margin_top, " ", margin_bottom, " ", margin_left, " ", margin_right)
+#
+#	margin_left = 0
+#	margin_right = 0
+#	margin_bottom = 0
+#	margin_top = 0
+#	# print(margin_top, " ", margin_bottom, " ", margin_left, " ", margin_right)
+#	print(rect_size)
+#	rect_size.x = row_num * cell_matrix[0][0].rect_size.x
+#	print(rect_size)
+#	rect_size.y = col_num * cell_matrix[0][0].rect_size.y
+#	print(rect_size)
+#	print(rect_position, " ", rect_size, " ", grow_horizontal, " ", grow_vertical)
+
+func create_cells(row, col):
 	columns = col  # for grid container
 	
 	for i in range(len(cell_matrix)):
-		for j in range(len(cell_matrix[i])):
-			cell_matrix[i][j].queue_free()
+		while not cell_matrix[i].empty():
+			var cell = cell_matrix[i].pop_back()
+			remove_child(cell)
+			cell.queue_free()
 	
 	cell_matrix.clear()
 	

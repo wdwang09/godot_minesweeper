@@ -6,6 +6,6 @@ bin/
 build/
 lib/
 
-# Mine
+**/*.dll
 **/*.exe
 **/*.pck
