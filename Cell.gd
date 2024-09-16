@@ -15,9 +15,9 @@ func _ready():
 
 func _on_ButtonMask_gui_input(event):
 	if event is InputEventMouseButton:
-		if (event.button_index == BUTTON_LEFT or 
-				event.button_index == BUTTON_RIGHT) and not event.pressed:
-			emit_signal("click_cell", event.button_index == BUTTON_LEFT, _row_idx, _col_idx)
+		if (event.button_index == MOUSE_BUTTON_LEFT or 
+				event.button_index == MOUSE_BUTTON_RIGHT) and not event.pressed:
+			emit_signal("click_cell", event.button_index == MOUSE_BUTTON_LEFT, _row_idx, _col_idx)
 #			print("Left button was clicked at ", row_idx, " ", col_idx)
 
 func set_row_col(row, col):
@@ -40,7 +40,7 @@ func is_mine():
 func get_neighbor_num():
 	return _neighbor_mine_num
 
-func show():
+func show_cell():
 	_is_shown = true
 	if is_flag():
 		add_or_remove_flag()

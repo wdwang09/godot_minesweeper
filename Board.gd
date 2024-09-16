@@ -1,14 +1,14 @@
 extends GridContainer
 
-export var row_num: int = 16
-export var col_num: int = 16
-export var mine_num: int = 40
+@export var row_num: int = 16
+@export var col_num: int = 16
+@export var mine_num: int = 40
 
 var new_game_row_num: int = row_num
 var new_game_col_num: int = col_num
 var new_game_mine_num: int = mine_num
 
-export (PackedScene) var Cell
+@export var Cell: PackedScene
 
 var cell_matrix := []
 var is_first_click := true  # generate mines after first click
@@ -53,7 +53,7 @@ func create_cells(row, col):
 	columns = col  # for grid container
 	
 	for i in range(len(cell_matrix)):
-		while not cell_matrix[i].empty():
+		while not cell_matrix[i].is_empty():
 			var cell = cell_matrix[i].pop_back()
 			remove_child(cell)
 			cell.queue_free()
@@ -63,11 +63,11 @@ func create_cells(row, col):
 	for i in range(row):
 		cell_matrix.append([])
 		for j in range(col):
-			var cell = Cell.instance()
+			var cell = Cell.instantiate()
 			cell.set_row_col(i, j)
 			add_child(cell)
 			
-			cell.connect("click_cell", self, "_on_Cell_click_cell")
+			cell.connect("click_cell", Callable(self, "_on_Cell_click_cell"))
 			cell_matrix[-1].append(cell)
 
 # Called when the node enters the scene tree for the first time.
@@ -116,7 +116,7 @@ func right_click_cell(row, col):  # right click event
 func open_cell(row, col):
 	if cell_matrix[row][col].is_shown():
 		return
-	cell_matrix[row][col].show()
+	cell_matrix[row][col].show_cell()
 	if cell_matrix[row][col].is_mine():  # mine
 		# print("Game Over")
 		is_game_over = true
